@@ -1,3 +1,8 @@
+body{
+  margin: 0;
+  padding: 0;
+}
+
 main{
   display: grid;
   place-items: center;
@@ -6,19 +11,24 @@ main{
 }
 
 .sandbox-area{
+  padding: 0;
+  margin: 0;
   position: relative;
-  border: 1px solid black;
-  height: 80%;
-  width: 80%;
+  height: 100vh;
+  width: 100vw;
   overflow: hidden;
 }
 
-.box{
+.building-box{
   position: absolute;
   top: 0;
   left: 0;
-  background-color: aqua;
-  height: 60px;
-  width: 60px;
+  height: 150px;
+  width: 150px;
   cursor: pointer;
+}
+
+.building-image{
+  height: 150px;
+  width: 150px;
 }

@@ -1,11 +1,16 @@
 import React from "react";
 import useDragger from "../hooks/useDragger";
 
-const BuildingMovable: React.FC<{ id: string }> = ({ id }) => {
-  useDragger(id);
+const BuildingMovable: React.FC<{ name: string, amount: number }> = ({ name, amount }) => {
+  const componentId: string = "building-" + crypto.randomUUID();
+
+  useDragger(componentId);
+  const imageName = name + ".png";
 
   return (
-    <div id={`${id}`} className="box">
+    <div id={componentId} className="building-box">
+      <img draggable={false} className="building-image" src={`/buildings/${imageName}`} alt={name} />
+      <div className="amount-badge">Amount: {amount}</div>
     </div>
   );
 };
