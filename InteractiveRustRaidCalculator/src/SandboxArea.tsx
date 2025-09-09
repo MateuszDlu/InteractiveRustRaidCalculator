@@ -19,6 +19,7 @@ const SandboxArea: React.FC = () => {
   return(
     <div className="sandbox-area" onContextMenu={e => handleContextMenu(e)}>
       {contextMenu.visible && <BuildingContextMenu x={contextMenu.x} y={contextMenu.y} closeMenu={contextMenuClose}/>}
+      <span className="add-buildings-instruction">Add buildings with <img className="rmb-icon" draggable={false} src="/icons/RMB_icon.png" alt="RMB"></img> and scroll to adjust amount</span>
       <BuildingMovable name="sheetmetal_door" amount={2}></BuildingMovable>
       <BuildingMovable name="armored_wall" amount={1}></BuildingMovable>
     </div>

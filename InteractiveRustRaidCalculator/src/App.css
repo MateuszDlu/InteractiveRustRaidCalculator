@@ -1,6 +1,9 @@
 body{
   margin: 0;
   padding: 0;
+  background-color: #1f2022;
+  color: #f7eae1;
+  font-family: Tomorrow, Arial;
 }
 
 main{
@@ -13,14 +16,28 @@ main{
 .sandbox-area{
   padding: 0;
   margin: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   position: relative;
   height: 100vh;
   width: 100vw;
   overflow: hidden;
 }
-
+.add-buildings-instruction{
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  opacity: 40%;
+  user-select: none;
+}
+.rmb-icon{
+  width: 35px;
+}
 .building-box{
   position: absolute;
+  display: flex;
+  flex-direction: column;
   top: 0;
   left: 0;
   height: 150px;
@@ -31,4 +48,83 @@ main{
 .building-image{
   height: 150px;
   width: 150px;
+}
+
+.building-delete-button, .building-delete-button-icon{
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 20px;
+  height: 20px;
+  background-color: transparent;
+  border: none;
+  cursor: pointer;
+  z-index: 10;
+}
+.building-delete-button-icon:hover{
+  opacity: 60%;
+}
+.amount-container{
+  margin-top: 7px;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+}
+.amount-label{
+  margin-right: 10px;
+  font-size: 17px;
+}
+.amount-input{
+  font-family: Tomorrow, Arial;
+  background-color: #f7eae1;
+  border: none;
+  color: #1f2022;
+  border-radius: 5px;
+  font-size: 17px;
+  font-weight: 500;
+  max-width: 50px;
+  text-align: center;
+}
+/* Chrome, Safari, Edge, Opera */
+.amount-input::-webkit-outer-spin-button,
+.amount-input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+/* Firefox */
+.amount-input[type=number] {
+  -moz-appearance: textfield;
+}
+
+.context-menu, .context-submenu{
+  display: flex;
+  justify-content: space-around;
+  flex-direction: column;
+  color: #1f2022;
+  background-color: #f7eae1;
+  padding: 7px 0px;
+  border-radius: 7px;
+  font-size: 18px;
+  font-weight: 500;
+}
+.context-menu-option {
+  position: relative;
+  padding: 5px 15px;
+  cursor: pointer;
+  white-space: nowrap;
+}
+.context-menu-option:hover,
+.context-submenu .context-menu-option:hover {
+  background-color: #cfc4bc;
+}
+.context-submenu{
+  position: absolute;
+  left: 100%;
+  top: -7px;
+  background: '#f7eae1';
+  color: '#1f2022';
+  border-radius: 7px;
+  z-index: 1001;
+  font-weight: 400;
 }
