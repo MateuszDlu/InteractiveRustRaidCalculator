@@ -5,6 +5,7 @@ interface BuildingContextMenuProps {
   x: number;
   y: number;
   closeMenu: () => void;
+  onAddBuilding: (name: string) => void;
 }
 
 const submenuOptions = {
@@ -34,15 +35,12 @@ const submenuOptions = {
   ]
 }
 
-const BuildingContextMenu: React.FC<BuildingContextMenuProps> = ({ x, y , closeMenu }) => {
+const BuildingContextMenu: React.FC<BuildingContextMenuProps> = ({ x, y , closeMenu, onAddBuilding }) => {
   const contextMenuRef = React.useRef<HTMLDivElement>(null);
   useOnClickOutside(contextMenuRef, closeMenu);
+  
 
   const [openSubmenu, setOpenSubmenu] = useState<keyof typeof submenuOptions | null>(null);
-
-  function addBuilding(sub: string): void {
-    console.log(`Adding building: ${sub}`); //TODO
-  }
 
   return (
     <div 
@@ -64,7 +62,7 @@ const BuildingContextMenu: React.FC<BuildingContextMenuProps> = ({ x, y , closeM
                   <div
                     key={sub.label}
                     className="context-menu-option"
-                    onClick={() => addBuilding(sub.image)}
+                    onClick={() => onAddBuilding(sub.image)}
                   >
                     {sub.label}
                   </div>

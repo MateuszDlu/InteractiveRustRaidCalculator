@@ -1,63 +1,63 @@
 import { useEffect, useRef } from "react";
 
-function useDragger(id: string): void {
-  const isClicked = useRef<Boolean>(false)
-
-  const coords = useRef<{
-    startX: number,
-    startY: number,
-    lastX: number,
-    lastY: number
-  }>({
-    startX: 0,
-    startY: 0,
-    lastX: 0,
-    lastY: 0
-  })
+function useDragger(id: string, onPositionChange: (x: number, y: number) => void): void {
+  const isDragging = useRef(false);
+  const lastMouse = useRef({ x: 0, y: 0 });
 
   useEffect(() => {
     const target = document.getElementById(id);
     if (!target) throw new Error("Element with given id not found");
 
-    const container = target.parentElement;
-    if (!container) throw new Error("Element has no parent");
+    let pos = { x: 0, y: 0 };
 
     const onMouseDown = (e: MouseEvent) => {
-      isClicked.current = true;
-      coords.current.startX = e.clientX;
-      coords.current.startY = e.clientY;
-    }
+      if (e.button !== 0) return; // only left mouse
+      if ((e.target as HTMLElement).closest("input, button")) return;
 
-    const onMouseUp = (e: MouseEvent) => {
-      isClicked.current = false;
-      coords.current.lastX = target.offsetLeft;
-      coords.current.lastY = target.offsetTop;
-    }
+      const rect = target.getBoundingClientRect();
+      const parentRect = target.parentElement!.getBoundingClientRect();
+
+      pos.x = rect.left - parentRect.left;
+      pos.y = rect.top - parentRect.top;
+
+      isDragging.current = true;
+      lastMouse.current = { x: e.clientX, y: e.clientY };
+
+      window.addEventListener("mousemove", onMouseMove);
+      window.addEventListener("mouseup", onMouseUp);
+    };
 
     const onMouseMove = (e: MouseEvent) => {
-      if (!isClicked.current) return;
+      if (!isDragging.current) return;
 
-      const nextX = e.clientX - coords.current.startX + coords.current.lastX;
-      const nextY = e.clientY - coords.current.startY + coords.current.lastY;
+      const dx = e.clientX - lastMouse.current.x;
+      const dy = e.clientY - lastMouse.current.y;
 
-      target.style.top = `${nextY}px`;
-      target.style.left = `${nextX}px`;
-    }
+      pos.x += dx;
+      pos.y += dy;
 
-    target.addEventListener('mousedown', onMouseDown);
-    target.addEventListener('mouseup', onMouseUp);
-    container.addEventListener('mousemove', onMouseMove);
-    container.addEventListener('mouseleave', onMouseUp);
+      lastMouse.current = { x: e.clientX, y: e.clientY };
 
-    const cleanup = () => {
-      target.removeEventListener('mousedown', onMouseDown);
-      target.removeEventListener('mouseup', onMouseUp);
-      container.removeEventListener('mousemove', onMouseMove);
-      container.removeEventListener('mouseleave', onMouseUp);
-    }
-    
-    return cleanup;
-  }, [id])
+      target.style.left = `${pos.x}px`;
+      target.style.top = `${pos.y}px`;
+    };
+
+    const onMouseUp = () => {
+      isDragging.current = false;
+      onPositionChange(pos.x, pos.y); // sync to React once
+      window.removeEventListener("mousemove", onMouseMove);
+      window.removeEventListener("mouseup", onMouseUp);
+    };
+
+
+    target.addEventListener("mousedown", onMouseDown);
+
+    return () => {
+      target.removeEventListener("mousedown", onMouseDown);
+      window.removeEventListener("mousemove", onMouseMove);
+      window.removeEventListener("mouseup", onMouseUp);
+    };
+  }, [id, onPositionChange]);
 }
 
 export default useDragger;

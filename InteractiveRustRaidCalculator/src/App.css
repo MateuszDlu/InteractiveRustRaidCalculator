@@ -43,6 +43,7 @@ main{
   height: 150px;
   width: 150px;
   cursor: pointer;
+  z-index: 1;
 }
 
 .building-image{
